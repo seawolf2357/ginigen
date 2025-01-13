@@ -3,22 +3,23 @@ import { ArrowRight } from 'lucide-react'
 
 const exampleMessages = [
   {
-    heading: 'What is OpenAI o1?',
-    message: 'What is OpenAI o1?'
+    heading: '오늘의 주요 뉴스 헤드라인이 궁금해요',
+    message: '오늘의 주요 뉴스 헤드라인이 궁금해요'
   },
   {
-    heading: 'Why is Nvidia growing rapidly?',
-    message: 'Why is Nvidia growing rapidly?'
+    heading: '삼성전자 최신 실적 분석해줘',
+    message: '삼성전자 최신 실적 분석해줘'
   },
   {
-    heading: 'Tesla vs Rivian',
-    message: 'Tesla vs Rivian'
+    heading: '현대차 vs 테슬라 비교',
+    message: '현대차 vs 테슬라 비교'
   },
   {
-    heading: 'Summary: https://arxiv.org/pdf/2407.16833',
-    message: 'Summary: https://arxiv.org/pdf/2407.16833'
+    heading: '한국의 인공지능 산업 현황 설명해줘',
+    message: '한국의 인공지능 산업 현황 설명해줘'
   }
 ]
+
 export function EmptyScreen({
   submitMessage,
   className
