@@ -3,9 +3,7 @@
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue
 } from './ui/select'
@@ -18,64 +16,54 @@ interface ModelSelectorProps {
   onModelChange: (id: string) => void
 }
 
-function groupModelsByProvider(models: Model[]) {
-  return models.reduce((groups, model) => {
-    const provider = model.provider
-    if (!groups[provider]) {
-      groups[provider] = []
-    }
-    groups[provider].push(model)
-    return groups
-  }, {} as Record<string, Model[]>)
-}
-
 export function ModelSelector({
   selectedModelId,
   onModelChange
 }: ModelSelectorProps) {
-  const handleModelChange = (id: string) => {
-    onModelChange(id)
-  }
+  // 기본 모델만 필터링 (예: OpenAI GPT-4)
+  const defaultModel = models.find(model => createModelId(model) === selectedModelId)
 
-  const groupedModels = groupModelsByProvider(models)
+  if (!defaultModel) return null
 
   return (
     <div className="absolute -top-8 left-2">
       <Select
         name="model"
         value={selectedModelId}
-        onValueChange={handleModelChange}
+        onValueChange={() => {}}  // 변경 불가능하게 설정
       >
         <SelectTrigger className="mr-2 h-7 text-xs border-none shadow-none focus:ring-0">
-          <SelectValue placeholder="Select model" />
+          <SelectValue>
+            <div className="flex items-center space-x-1">
+              <Image
+                src={`/providers/logos/${defaultModel.providerId}.svg`}
+                alt={defaultModel.provider}
+                width={18}
+                height={18}
+                className="bg-white rounded-full border"
+              />
+              <span className="text-xs font-medium">{defaultModel.name}</span>
+            </div>
+          </SelectValue>
         </SelectTrigger>
-        <SelectContent className="max-h-[300px] overflow-y-auto">
-          {Object.entries(groupedModels).map(([provider, models]) => (
-            <SelectGroup key={provider}>
-              <SelectLabel className="text-xs sticky top-0 bg-background z-10">
-                {provider}
-              </SelectLabel>
-              {models.map(model => (
-                <SelectItem
-                  key={createModelId(model)}
-                  value={createModelId(model)}
-                  className="py-2"
-                >
-                  <div className="flex items-center space-x-1">
-                    <Image
-                      src={`/providers/logos/${model.providerId}.svg`}
-                      alt={model.provider}
-                      width={18}
-                      height={18}
-                      className="bg-white rounded-full border"
-                    />
-                    <span className="text-xs font-medium">{model.name}</span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          ))}
+        <SelectContent>
+          <SelectItem value={selectedModelId}>
+            <div className="flex items-center space-x-1">
+              <Image
+                src={`/providers/logos/${defaultModel.providerId}.svg`}
+                alt={defaultModel.provider}
+                width={18}
+                height={18}
+                className="bg-white rounded-full border"
+              />
+              <span className="text-xs font-medium">{defaultModel.name}</span>
+            </div>
+          </SelectItem>
         </SelectContent>
+      </Select>
+    </div>
+  )
+}
       </Select>
     </div>
   )
